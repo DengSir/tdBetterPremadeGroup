@@ -1,0 +1,7 @@
+## Interface: 80000
+## Title: tdBetterPremadeGroup
+## Author: DengSir
+## Version: @project-version@
+## SavedVariables: TD_DB_BETTERPREMADEGROUP
+
+Load.xml
