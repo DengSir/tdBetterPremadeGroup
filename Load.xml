@@ -3,6 +3,7 @@
     <Include file="Libs\Embeds.xml" />
     <Script file="Addon.lua" />
     <Script file="Layout.lua" />
+    <Script file="Filter.lua" />
     <Script file="Search.lua" />
     <Script file="Application.lua" />
 </Ui>

@@ -5,6 +5,7 @@
 
 local ns          = select(2, ...)
 local Addon       = ns.Addon
+local Filter      = ns.Filter
 local GUI         = ns.GUI
 local SortType    = ns.SortType
 local WIDTH       = ns.WIDTH
@@ -137,7 +138,7 @@ function Search:InitUI()
 
     FilterButton:SetScript('OnClick', function(FilterButton)
         PlaySound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON)
-        GUI:ToggleMenu(FilterButton, self:GetFilterDropMenu())
+        Filter:TogglePanel()
     end)
 end
 
@@ -205,36 +206,6 @@ function Search:GetAvailableCategories()
     return self.categoryMenuList
 end
 
-function Search:GetFilterDropMenu()
-    return {
-        {
-            text = 'Role',
-            hasArrow = true,
-            keepShownOnClick = true,
-            menuTable = {
-                {
-                    text = 'TANK',
-                    checkable = true,
-                    isNotRadio = true,
-                    keepShownOnClick = true,
-                },
-                {
-                    text = 'HEALER',
-                    checkable = true,
-                    isNotRadio = true,
-                    keepShownOnClick = true,
-                },
-                {
-                    text = 'DAMAGER',
-                    checkable = true,
-                    isNotRadio = true,
-                    keepShownOnClick = true,
-                },
-            }
-        },
-    }
-end
-
 function Search:InitHook()
     self:RegisterEvent('LFG_LIST_AVAILABILITY_UPDATE')
     self:SecureHook('LFGListSearchEntry_Update')
@@ -260,7 +231,7 @@ function Search:OnSearchPanelShow()
     SearchBox:SetParent(self.SearchPanel)
     SearchBox:SetPoint('TOPLEFT', self.SearchPanel.CategoryName, 'BOTTOMLEFT', 4 - 28, -7)
 
-    -- FilterButton:Show()
+    FilterButton:Show()
 end
 
 function Search:LFGListSearchEntry_Update(button)
