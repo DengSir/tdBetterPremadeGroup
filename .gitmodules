@@ -1,0 +1,3 @@
+[submodule "Libs/tdGUI"]
+	path = Libs/tdGUI
+	url = https://github.com/DengSir/tdGUI.git

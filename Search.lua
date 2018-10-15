@@ -5,6 +5,7 @@
 
 local ns          = select(2, ...)
 local Addon       = ns.Addon
+local GUI         = ns.GUI
 local SortType    = ns.SortType
 local WIDTH       = ns.WIDTH
 local ITEM_HEIGHT = 22
@@ -134,11 +135,9 @@ function Search:InitUI()
     end
     -- self.CategoryButton = CategoryButton
 
-
-
     FilterButton:SetScript('OnClick', function(FilterButton)
         PlaySound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON)
-        ns.DropMenu:Toggle(nil, self:GetFilterDropMenu(), FilterButton)
+        GUI:ToggleMenu(FilterButton, self:GetFilterDropMenu())
     end)
 end
 
@@ -240,22 +239,9 @@ function Search:InitHook()
     self:RegisterEvent('LFG_LIST_AVAILABILITY_UPDATE')
     self:SecureHook('LFGListSearchEntry_Update')
     self:RawHook('LFGListUtil_SortSearchResults', true)
-    self:RawHook('LFGListFrame_FixPanelValid', true)
-    -- self:HookScript(self.SearchPanel, 'OnShow', 'OnSearchPanelShow')
     self.SearchPanel:HookScript('OnShow', function()
         self:OnSearchPanelShow()
     end)
-    -- self.SearchPanel:HookScript('OnHide', function()
-    --     self:LFG_LIST_AVAILABILITY_UPDATE()
-    -- end)
-
-    -- hooksecurefunc('LFGListSearchPanel_SetCategory', function(...)
-    --     print(...)
-    -- end)
-
-    -- hooksecurefunc('LFGListFrame_FixPanelValid', function(f)
-    --     print(f.baseFilters, self.SearchPanel.preferredFilters)
-    -- end)
 end
 
 function Search:LFG_LIST_AVAILABILITY_UPDATE()
@@ -273,7 +259,6 @@ function Search:OnSearchPanelShow()
     SearchBox:ClearAllPoints()
     SearchBox:SetParent(self.SearchPanel)
     SearchBox:SetPoint('TOPLEFT', self.SearchPanel.CategoryName, 'BOTTOMLEFT', 4 - 28, -7)
-    -- SearchBox:SetFrameLevel(self.SearchPanel:GetFrameLevel() + 5)
 
     -- FilterButton:Show()
 end
@@ -349,18 +334,6 @@ function Search:LFGListUtil_SortSearchResults(results)
     end)
 end
 
-function Search:LFGListFrame_FixPanelValid(frame)
-    if frame.activePanel == self.SearchPanel then
-        -- print(2)
-        -- if self.SearchPanel.categoryID == 6 then
-        --     self.SearchPanel.preferredFilters = frame.baseFilters
-        -- end
-
-        print(frame.baseFilters, self.SearchPanel.preferredFilters)
-    end
-    return self.hooks.LFGListFrame_FixPanelValid(frame)
-end
-
 function Search:UpdateHeaders()
     local sortType = self.sets.sortType
     local sortDesc = self.sets.sortDesc
@@ -379,10 +352,5 @@ function Search:UpdateResults()
 end
 
 function Search:ToggleCategroyDropdown(anchor)
-    -- if not self.CategoryDropdown then
-    --     self.CategoryDropdown = CreateFrame('Frame', 'tdBetterPremadeGroupCategoryDropdown', UIParent, 'UIDropDownMenuTemplate')
-    --     self.CategoryDropdown.initialize = EasyMenu_Initialize
-    -- end
-    -- ToggleDropDownMenu(1, nil, self.CategoryDropdown, anchor, 0, 0, self:GetAvailableCategories())
-    ns.DropMenu:Toggle(nil, self:GetAvailableCategories(), anchor)
+    GUI:ToggleMenu(anchor, self:GetAvailableCategories())
 end

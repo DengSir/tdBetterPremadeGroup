@@ -32,8 +32,7 @@ function Addon:OnInitialize()
 
     self.db = LibStub('AceDB-3.0'):New('TD_DB_BETTERPREMADEGROUP', defaults, true)
 
-    ns.GUI = LibStub('tdGUI-1.0')
-    ns.DropMenu = ns.GUI:GetClass('DropMenu'):New(nil)
+    -- ns.DropMenu = ns.GUI:GetClass('DropMenu'):New(nil)
 end
 
 -- function Addon:OnModuleCreated(module)
