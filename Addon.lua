@@ -31,13 +31,11 @@ function Addon:OnInitialize()
     }
 
     self.db = LibStub('AceDB-3.0'):New('TD_DB_BETTERPREMADEGROUP', defaults, true)
-
-    -- ns.DropMenu = ns.GUI:GetClass('DropMenu'):New(nil)
 end
 
--- function Addon:OnModuleCreated(module)
---     ns[module:GetName()] = module
--- end
+function Addon:OnModuleCreated(module)
+    ns[module:GetName()] = module
+end
 
 function ModulePrototype:AddRegionWidth(region, width)
     region:SetWidth(region:GetWidth() +(width or WIDTH))

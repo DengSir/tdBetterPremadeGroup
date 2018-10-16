@@ -6,4 +6,7 @@
     <Script file="Filter.lua" />
     <Script file="Search.lua" />
     <Script file="Application.lua" />
+    <Script file="AutoComplete.lua" />
+    <Script file="AutoComplete\All.lua" />
+    <Script file="AutoComplete\zhCN.lua" />
 </Ui>
