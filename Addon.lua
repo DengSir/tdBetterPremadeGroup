@@ -5,7 +5,7 @@
 
 local ADDON_NAME, ns = ...
 
-local Addon           = LibStub('AceAddon-3.0'):NewAddon(ADDON_NAME)
+local Addon           = LibStub('AceAddon-3.0'):NewAddon(ADDON_NAME, 'LibClass-2.0')
 local WIDTH           = 225
 local HALF_WIDTH      = 225 / 2
 local ModulePrototype = {}

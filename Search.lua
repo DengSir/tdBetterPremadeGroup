@@ -209,7 +209,7 @@ end
 function Search:InitHook()
     self:RegisterEvent('LFG_LIST_AVAILABILITY_UPDATE')
     self:SecureHook('LFGListSearchEntry_Update')
-    self:RawHook('LFGListUtil_SortSearchResults', true)
+    self:SecureHook('LFGListUtil_SortSearchResults')
     self.SearchPanel:HookScript('OnShow', function()
         self:OnSearchPanelShow()
     end)

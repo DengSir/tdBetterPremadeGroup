@@ -2,6 +2,9 @@
 ..\FrameXML\UI.xsd">
     <Include file="Libs\Embeds.xml" />
     <Script file="Addon.lua" />
+    <Script file="Widgets\Inset.lua" />
+    <Script file="Widgets\MinMax.lua" />
+    <Script file="Widgets\Check.lua" />
     <Script file="Layout.lua" />
     <Script file="Filter.lua" />
     <Script file="Search.lua" />
