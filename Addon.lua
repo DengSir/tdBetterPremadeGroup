@@ -13,9 +13,11 @@ local ModulePrototype = {}
 ns.GUI      = LibStub('tdGUI-1.0')
 ns.WIDTH    = WIDTH
 ns.Addon    = Addon
+ns.L        = LibStub('AceLocale-3.0'):GetLocale(ADDON_NAME)
 ns.SortType = {
     Activity  = 1,
     ItemLevel = 2,
+    Members   = 3,
 }
 
 Addon:SetDefaultModulePrototype(ModulePrototype)

@@ -15,6 +15,7 @@ function Filter:OnEnable()
     local SearchPanel = LFGListFrame.SearchPanel
     local Frame = CreateFrame('Frame', nil, SearchPanel) do
         GUI:Embed(Frame, 'Refresh')
+        Frame:Hide()
         Frame:SetPoint('TOPLEFT', SearchPanel, 'TOPRIGHT', -5, -18)
         Frame:SetSize(250, 10)
         Frame:SetFrameLevel(SearchPanel:GetFrameLevel() + 10)

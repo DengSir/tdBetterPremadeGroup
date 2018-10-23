@@ -1,12 +1,13 @@
 <Ui xsi:schemaLocation="http://www.blizzard.com/wow/ui/
 ..\FrameXML\UI.xsd">
     <Include file="Libs\Embeds.xml" />
+    <Include file="Localization\Localization.xml" />
     <Script file="Addon.lua" />
     <Script file="Widgets\Inset.lua" />
     <Script file="Widgets\MinMax.lua" />
     <Script file="Widgets\Check.lua" />
     <Script file="Layout.lua" />
-    <Script file="Filter.lua" />
+    <!-- <Script file="Filter.lua" /> -->
     <Script file="Search.lua" />
     <Script file="Application.lua" />
     <Script file="AutoComplete.lua" />

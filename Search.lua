@@ -9,6 +9,7 @@ local Filter      = ns.Filter
 local GUI         = ns.GUI
 local SortType    = ns.SortType
 local WIDTH       = ns.WIDTH
+local L           = ns.L
 local ITEM_HEIGHT = 22
 
 local Search = Addon:NewModule('Search', 'AceHook-3.0', 'AceEvent-3.0')
@@ -61,6 +62,11 @@ function Search:InitUI()
             text     = ITEM_LEVEL_ABBR,
             width    = 60,
             sortType = SortType.ItemLevel
+        },
+        {
+            text     = L['Members Count'],
+            width    = 130,
+            sortType = SortType.Members,
         }
     }
 
@@ -136,10 +142,10 @@ function Search:InitUI()
     end
     -- self.CategoryButton = CategoryButton
 
-    FilterButton:SetScript('OnClick', function(FilterButton)
-        PlaySound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON)
-        Filter:TogglePanel()
-    end)
+    -- FilterButton:SetScript('OnClick', function(FilterButton)
+    --     PlaySound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON)
+    --     Filter:TogglePanel()
+    -- end)
 end
 
 local function optvalue(value)
@@ -159,19 +165,24 @@ function Search:CreateCategoryInfo(id, baseFilters, filters)
                     optvalue(baseFilters) == self.SearchPanel.preferredFilters
         end,
         func = function()
+            LFGListFrame:Hide()
             local baseFilters = optvalue(baseFilters)
             LFGListFrame.baseFilters = baseFilters
             LFGListSearchPanel_SetCategory(self.SearchPanel, id, filters, baseFilters)
-            LFGListSearchPanel_DoSearch(self.SearchPanel)
 
             if baseFilters == LE_LFG_LIST_FILTER_PVE then
                 PVEFrame_ShowFrame('GroupFinderFrame', 'LFGListPVEStub')
             else
                 PVEFrame_ShowFrame('PVPUIFrame', 'LFGListPVPStub')
             end
+            LFGListFrame:Show()
+            LFGListFrame_SetActivePanel(LFGListFrame, self.SearchPanel)
+            LFGListSearchPanel_DoSearch(self.SearchPanel)
         end
     }
 end
+
+local LFG_CATEGORY_CUSTOM = 6
 
 function Search:GetAvailableCategories()
     if not self.categoryMenuList then
@@ -180,8 +191,8 @@ function Search:GetAvailableCategories()
 
         local function ScanBaseFilter(baseFilters)
             for _, id in ipairs(C_LFGList.GetAvailableCategories(baseFilters)) do
-                if id == 6 then
-                    foundCustom = 6
+                if id == LFG_CATEGORY_CUSTOM then
+                    foundCustom = true
                 else
                     local name, separateRecommended = C_LFGList.GetCategoryInfo(id)
                     if separateRecommended then
@@ -198,7 +209,7 @@ function Search:GetAvailableCategories()
         ScanBaseFilter(LE_LFG_LIST_FILTER_PVP)
 
         if foundCustom then
-            table.insert(categories, self:CreateCategoryInfo(6, function() return LFGListFrame.baseFilters end, 0))
+            table.insert(categories, self:CreateCategoryInfo(LFG_CATEGORY_CUSTOM, function() return LFGListFrame.baseFilters end, 0))
         end
 
         self.categoryMenuList = categories
@@ -225,13 +236,13 @@ function Search:OnSearchPanelShow()
     local SearchBox = self.SearchPanel.SearchBox
     local FilterButton = self.SearchPanel.FilterButton
 
-    self:AddRegionWidth(SearchBox, WIDTH - FilterButton:GetWidth())
+    -- FilterButton:Show()
+
+    self:AddRegionWidth(SearchBox, WIDTH - (FilterButton:IsShown() and FilterButton:GetWidth() or 0))
 
     SearchBox:ClearAllPoints()
     SearchBox:SetParent(self.SearchPanel)
     SearchBox:SetPoint('TOPLEFT', self.SearchPanel.CategoryName, 'BOTTOMLEFT', 4 - 28, -7)
-
-    FilterButton:Show()
 end
 
 function Search:LFGListSearchEntry_Update(button)
@@ -272,7 +283,7 @@ function Search:LFGListUtil_SortSearchResults(results)
 
     for i = #results, 1, -1 do
         local id, activityId, name, comment, voiceChat, itemLevel, honorLevel, age,
-            numBNetFriends, numCharFriends, numGuildMates, isDelisted, numMembers = C_LFGList.GetSearchResultInfo(results[i])
+            numBNetFriends, numCharFriends, numGuildMates, isDelisted, leaderName, numMembers = C_LFGList.GetSearchResultInfo(results[i])
 
         if not activityId or itemLevel < 0 then
             tremove(results, i)
@@ -284,6 +295,8 @@ function Search:LFGListUtil_SortSearchResults(results)
                 important = activityId
             elseif sortType == SortType.ItemLevel then
                 important = itemLevel
+            elseif sortType == SortType.Members then
+                important = numMembers
             end
 
             if sortDesc then
